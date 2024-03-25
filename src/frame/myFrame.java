@@ -237,12 +237,14 @@ public class myFrame extends JFrame implements ActionListener {
             buy.addActionListener(this);
             buyButtons.set((level*4)+index,buy);
         }
-        if(card.ownedBy.equals("bank")){
-            JButton res=new JButton("Res");
-            res.setBounds(105,100,70,70);
+        if(card.level != 0){
+        if(card.ownedBy.equals("bank")) {
+            JButton res = new JButton("Res");
+            res.setBounds(105, 100, 70, 70);
             cardPane.add(res);
             res.addActionListener(this);
-            reserveButtons.set((level*4)+index,res);
+            reserveButtons.set((level * 4) + index, res);
+        }
         }
         //final addition
             pane.add(cardPane, 2,-1);
@@ -265,6 +267,9 @@ public class myFrame extends JFrame implements ActionListener {
     drawCard(725,725,cards.lv3CardsOnDeck.get(1) ,3,1);
     drawCard(950,725,cards.lv3CardsOnDeck.get(2) ,3,2);
     drawCard(1175,725,cards.lv3CardsOnDeck.get(3) ,3,3);
+        drawCard(1500,25,cards.lv0CardsOnDeck.get(0) ,0,0);
+        drawCard(1500,375,cards.lv0CardsOnDeck.get(1) ,0,1);
+        drawCard(1500,725,cards.lv0CardsOnDeck.get(2) ,0,2);
 }
     public void drawSlots(){
         backGround.setBounds(0,0,1920,1080);
@@ -426,7 +431,7 @@ public class myFrame extends JFrame implements ActionListener {
                 goBack2();
             }
         }
-        else for (int i = 4; i < 16; i++) {
+        else for (int i = 0; i < 16; i++) {
             if(e.getSource().equals(buyButtons.get(i))){
                 if(turn==1) {
                     if (player1.buyCard(i / 4, i % 4) == 0) {
@@ -450,7 +455,7 @@ public class myFrame extends JFrame implements ActionListener {
         }
 
 
-        for (int i = 4; i < 16; i++) {
+        for (int i = 0; i < 16; i++) {
             if(e.getSource().equals(reserveButtons.get(i))){
                 if(turn==1) {
                     if (player1.reserveCard(i / 4, i % 4) == 0) {
@@ -484,6 +489,9 @@ public class myFrame extends JFrame implements ActionListener {
         pane.remove(lv3CardsBase.get(1));
         pane.remove(lv3CardsBase.get(2));
         pane.remove(lv3CardsBase.get(3));
+        pane.remove(lv0CardsBase.get(0));
+        pane.remove(lv0CardsBase.get(1));
+        pane.remove(lv0CardsBase.get(2));
         pane.remove(backGround);
         pane.remove(back);
         pane.repaint();

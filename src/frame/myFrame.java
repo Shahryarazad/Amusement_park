@@ -268,7 +268,6 @@ public class myFrame extends JFrame implements ActionListener {
                 buttonsActive++;
                 checkArray[4] = 1;
             }
-            System.out.println(Arrays.toString(checkArray));
             if(buttonsActive == 1){
                 for (int i = 0; i < 5; i++) {
                     if(checkArray[i] == 1){

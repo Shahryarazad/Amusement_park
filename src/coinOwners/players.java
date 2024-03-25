@@ -121,6 +121,10 @@ public class players {
                          cards.lv1CardsOnDeck.get(index).ownedBy = "1";
                     else if(this == player2)
                          cards.lv1CardsOnDeck.get(index).ownedBy = "2";
+                    for (int i = 0; i < 5; i++) {
+                         if(cards.lv1CardsOnDeck.get(index).voucher.equals(colorList.get(i)))
+                              this.voucherAmounts[i]++;
+                    }
                     cards.lv1CardsOnDeck.remove(index);
                     cards.lv1CardsOnDeck.add(index, new cards(level));
                } else
@@ -145,6 +149,10 @@ public class players {
                          cards.lv1CardsOnDeck.get(index).ownedBy = "1";
                     else if(this == player2)
                          cards.lv1CardsOnDeck.get(index).ownedBy = "2";
+                    for (int i = 0; i < 5; i++) {
+                         if(cards.lv1CardsOnDeck.get(index).voucher.equals(colorList.get(i)))
+                              this.voucherAmounts[i]++;
+                    }
                     cards.lv2CardsOnDeck.remove(index);
                     cards.lv2CardsOnDeck.add(index, new cards(level));
                } else
@@ -169,6 +177,10 @@ public class players {
                          cards.lv1CardsOnDeck.get(index).ownedBy = "1";
                     else if(this == player2)
                          cards.lv1CardsOnDeck.get(index).ownedBy = "2";
+                    for (int i = 0; i < 5; i++) {
+                         if(cards.lv1CardsOnDeck.get(index).voucher.equals(colorList.get(i)))
+                              this.voucherAmounts[i]++;
+                    }
                     cards.lv3CardsOnDeck.remove(index);
                     cards.lv3CardsOnDeck.add(index, new cards(level));
                } else

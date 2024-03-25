@@ -34,15 +34,20 @@ public class myFrame extends JFrame implements ActionListener {
     JLabel BlueLabel = new JLabel();
     JLabel BlackLabel = new JLabel();
     JLabel WhiteLabel = new JLabel();
+    public JTextField turnDisplay = new JTextField("Player1");
+    public JTextField coinAmountDisplay = new JTextField(Arrays.toString(player1.coinAmounts));
+    public JTextField voucherAmountDisplay = new JTextField(Arrays.toString(player1.voucherAmounts));
 
     public static ArrayList<JLayeredPane> lv1CardsBase= new ArrayList<>();
     public static ArrayList<JButton> buyButtons = new ArrayList<>();
+    public static ArrayList<JButton> reserveButtons = new ArrayList<>();
+
     {
         for (int i = 0; i < 20; i++) {
-           buyButtons.add(new JButton());
+            buyButtons.add(new JButton());
+            reserveButtons.add(new JButton());
         }
     }
-    public JTextField turnDisplay = new JTextField("Player1");
     public static ArrayList<JLayeredPane> lv2CardsBase= new ArrayList<>();
     public static ArrayList<JLayeredPane> lv3CardsBase= new ArrayList<>();
     public static ArrayList<JLayeredPane> lv0CardsBase= new ArrayList<>();
@@ -69,11 +74,88 @@ public class myFrame extends JFrame implements ActionListener {
         turnDisplay.setBounds(10,500,100,50);
         turnDisplay.setOpaque(false);
         turnDisplay.setBorder(null);
+        coinAmountDisplay.setBounds(10,600,200,50);
+        coinAmountDisplay.setOpaque(false);
+        coinAmountDisplay.setBorder(null);
+        voucherAmountDisplay.setBounds(10,700,200,50);
+        voucherAmountDisplay.setOpaque(false);
+        voucherAmountDisplay.setBorder(null);
         turnDisplay.setFont(new Font("Calibre" , Font.PLAIN , 30));
+        coinAmountDisplay.setFont(new Font("Calibre" , Font.PLAIN , 30));
+        voucherAmountDisplay.setFont(new Font("Calibre" , Font.PLAIN , 30));
         pane.add(turnDisplay,Integer.valueOf(3));
+        pane.add(coinAmountDisplay,Integer.valueOf(3));
+        pane.add(voucherAmountDisplay,Integer.valueOf(3));
+        JLabel RedLabel = new JLabel();
+        JLabel RedLabel1 = new JLabel();
+        RedLabel.setBounds(10,575,30,30);
+        RedLabel1.setBounds(10,675,30,30);
+        ImageIcon RedCoin= new ImageIcon("Red.png");
+        Image image = RedCoin.getImage();
+        Image newImg = image.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        RedCoin = new ImageIcon(newImg);
+        RedLabel.setIcon(RedCoin);
+        RedLabel1.setIcon(RedCoin);
+        pane.add(RedLabel,Integer.valueOf(3));
+        pane.add(RedLabel1,Integer.valueOf(3));
+        JLabel GreenLabel = new JLabel();
+        JLabel GreenLabel1 = new JLabel();
+        GreenLabel.setBounds(43,575,30,30);
+        GreenLabel1.setBounds(43,675,30,30);
+        ImageIcon GreenCoin= new ImageIcon("green.png");
+        Image image1 = GreenCoin.getImage();
+        Image newImg1 = image1.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        GreenCoin = new ImageIcon(newImg1);
+        GreenLabel.setIcon(GreenCoin);
+        GreenLabel1.setIcon(GreenCoin);
+        pane.add(GreenLabel,Integer.valueOf(3));
+        pane.add(GreenLabel1,Integer.valueOf(3));
+        JLabel BlueLabel = new JLabel();
+        JLabel BlueLabel1 = new JLabel();
+        BlueLabel.setBounds(76,575,30,30);
+        BlueLabel1.setBounds(76,675,30,30);
+        ImageIcon BlueCoin= new ImageIcon("Blue.png");
+        Image image2 = BlueCoin.getImage();
+        Image newImg2 = image2.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        BlueCoin = new ImageIcon(newImg2);
+        BlueLabel.setIcon(BlueCoin);
+        BlueLabel1.setIcon(BlueCoin);
+        pane.add(BlueLabel,Integer.valueOf(3));
+        pane.add(BlueLabel1,Integer.valueOf(3));
+        JLabel BlackLabel = new JLabel();
+        JLabel BlackLabel1 = new JLabel();
+        BlackLabel.setBounds(109,575,30,30);
+        BlackLabel1.setBounds(109,675,30,30);
+        ImageIcon BlackCoin= new ImageIcon("Black.png");
+        Image image3 = BlackCoin.getImage();
+        Image newImg3 = image3.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        BlackCoin = new ImageIcon(newImg3);
+        BlackLabel.setIcon(BlackCoin);
+        BlackLabel1.setIcon(BlackCoin);
+        pane.add(BlackLabel,Integer.valueOf(3));
+        pane.add(BlackLabel1,Integer.valueOf(3));
+        JLabel WhiteLabel = new JLabel();
+        JLabel WhiteLabel1 = new JLabel();
+        WhiteLabel.setBounds(142,575,30,30);
+        WhiteLabel1.setBounds(142,675,30,30);
+        ImageIcon WhiteCoin= new ImageIcon("White.png");
+        Image image4 = WhiteCoin.getImage();
+        Image newImg4 = image4.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        WhiteCoin = new ImageIcon(newImg4);
+        WhiteLabel.setIcon(WhiteCoin);
+        WhiteLabel1.setIcon(WhiteCoin);
+        pane.add(WhiteLabel,Integer.valueOf(3));
+        pane.add(WhiteLabel1,Integer.valueOf(3));
+        JLabel GoldLabel = new JLabel();
+        GoldLabel.setBounds(175,575,30,30);
+        ImageIcon GoldCoin= new ImageIcon("Gold.png");
+        Image image5 = GoldCoin.getImage();
+        Image newImg5 = image5.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        GoldCoin = new ImageIcon(newImg5);
+        GoldLabel.setIcon(GoldCoin);
+        pane.add(GoldLabel,Integer.valueOf(3));
         this.add(pane);
     }
-    int cardCount =0;
     public void drawCard(int XPos , int YPos , cards card , int level , int index ) {
         //makes card base
         JLayeredPane cardPane;
@@ -154,6 +236,13 @@ public class myFrame extends JFrame implements ActionListener {
             cardPane.add(buy);
             buy.addActionListener(this);
             buyButtons.set((level*4)+index,buy);
+        }
+        if(card.ownedBy.equals("bank")){
+            JButton res=new JButton("Res");
+            res.setBounds(105,100,70,70);
+            cardPane.add(res);
+            res.addActionListener(this);
+            reserveButtons.set((level*4)+index,res);
         }
         //final addition
             pane.add(cardPane, 2,-1);
@@ -282,12 +371,16 @@ public class myFrame extends JFrame implements ActionListener {
                             goBack2();
                             turn = 2;
                             turnDisplay.setText("Player2");
+                            coinAmountDisplay.setText(Arrays.toString(player2.coinAmounts));
+                            voucherAmountDisplay.setText(Arrays.toString(player2.voucherAmounts));
                             break;
                         }
                         else if(turn == 2){
                             player2.takeFromSlotMachine(i);
                             goBack2();
                             turn = 1;
+                            coinAmountDisplay.setText(Arrays.toString(player1.coinAmounts));
+                            voucherAmountDisplay.setText(Arrays.toString(player1.voucherAmounts));
                             turnDisplay.setText("Player1");
                             break;
                         }
@@ -319,11 +412,15 @@ public class myFrame extends JFrame implements ActionListener {
                 if(turn == 1){
                     player1.takeFromSlotMachine(input1,input2,input3);
                     turn =2;
+                    coinAmountDisplay.setText(Arrays.toString(player2.coinAmounts));
+                    voucherAmountDisplay.setText(Arrays.toString(player2.voucherAmounts));
                     turnDisplay.setText("Player2");
                 }
                 else if(turn == 2){
                     player2.takeFromSlotMachine(input1,input2,input3);
                     turn =1;
+                    coinAmountDisplay.setText(Arrays.toString(player1.coinAmounts));
+                    voucherAmountDisplay.setText(Arrays.toString(player1.voucherAmounts));
                     turnDisplay.setText("Player1");
                 }
                 goBack2();
@@ -334,6 +431,8 @@ public class myFrame extends JFrame implements ActionListener {
                 if(turn==1) {
                     if (player1.buyCard(i / 4, i % 4) == 0) {
                         turn=2;
+                        coinAmountDisplay.setText(Arrays.toString(player2.coinAmounts));
+                        voucherAmountDisplay.setText(Arrays.toString(player2.voucherAmounts));
                         turnDisplay.setText("Player2");
                         goBack();
                     }
@@ -341,12 +440,35 @@ public class myFrame extends JFrame implements ActionListener {
                 else if(turn==2) {
                     if (player2.buyCard(i / 4, i % 4) == 0) {
                         turn=1;
+                        coinAmountDisplay.setText(Arrays.toString(player1.coinAmounts));
+                        voucherAmountDisplay.setText(Arrays.toString(player1.voucherAmounts));
                         turnDisplay.setText("Player1");
                         goBack();
                     }
                 }
             }
         }
+
+
+        for (int i = 4; i < 16; i++) {
+            if(e.getSource().equals(reserveButtons.get(i))){
+                if(turn==1) {
+                    if (player1.reserveCard(i / 4, i % 4) == 0) {
+                        turn=2;
+                        turnDisplay.setText("Player2");
+                        goBack();
+                    }
+                }
+                else if(turn==2) {
+                    if (player2.reserveCard(i / 4, i % 4) == 0) {
+                        turn=1;
+                        turnDisplay.setText("Player1");
+                        goBack();
+                    }
+                }
+            }
+        }
+
     }
 
     private void goBack() {

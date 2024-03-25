@@ -204,21 +204,34 @@ public class players {
           }
           return 0;
      }
-     public void reserveCard(int level , int index){
+     public int reserveCard(int level , int index){
           if (level == 1) {
                this.reservedCards.add(cards.lv1CardsOnDeck.get(index));
+               if(this == player1)
+                    cards.lv1CardsOnDeck.get(index).reservedBy = "1";
+               else if(this == player2)
+                    cards.lv1CardsOnDeck.get(index).reservedBy = "2";
                cards.lv1CardsOnDeck.remove(index);
                cards.lv1CardsOnDeck.add(index, new cards(level));
           }
           if (level == 2) {
                this.reservedCards.add(cards.lv2CardsOnDeck.get(index));
+               if(this == player1)
+                    cards.lv1CardsOnDeck.get(index).reservedBy = "1";
+               else if(this == player2)
+                    cards.lv1CardsOnDeck.get(index).reservedBy = "2";
                cards.lv2CardsOnDeck.remove(index);
                cards.lv2CardsOnDeck.add(index, new cards(level));
           }
           if (level == 3) {
                this.reservedCards.add(cards.lv3CardsOnDeck.get(index));
+               if(this == player1)
+                    cards.lv1CardsOnDeck.get(index).reservedBy = "1";
+               else if(this == player2)
+                    cards.lv1CardsOnDeck.get(index).reservedBy = "2";
                cards.lv3CardsOnDeck.remove(index);
                cards.lv3CardsOnDeck.add(index, new cards(level));
           }
+          return 0;
      }
 }

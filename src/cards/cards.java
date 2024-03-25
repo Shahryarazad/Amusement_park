@@ -15,10 +15,13 @@ public class cards {
     public int level;
     public int funValue;
     public String ownedBy;
+    public String reservedBy;
+
     public String voucher;
     public int[] cost = new int[5];
     public cards(int level){
         ownedBy = "bank";
+        reservedBy = "";
         Random random = new Random();
         this.level =level;
         if(level != 0)

@@ -42,6 +42,7 @@ public class myFrame extends JFrame implements ActionListener {
            buyButtons.add(new JButton());
         }
     }
+    public JTextField turn = new JTextField("Player1");
     public static ArrayList<JLayeredPane> lv2CardsBase= new ArrayList<>();
     public static ArrayList<JLayeredPane> lv3CardsBase= new ArrayList<>();
     public static ArrayList<JLayeredPane> lv0CardsBase= new ArrayList<>();
@@ -65,6 +66,11 @@ public class myFrame extends JFrame implements ActionListener {
         confirm.setBounds(880,800,100,100);
         slot.setBounds(1805,0,100,100);
         pane.setBounds(0,0,1920,1080);
+        turn.setBounds(10,500,100,50);
+        turn.setOpaque(false);
+        turn.setBorder(null);
+        turn.setFont(new Font("Calibre" , Font.PLAIN , 30));
+        pane.add(turn,Integer.valueOf(3));
         this.add(pane);
     }
     int cardCount =0;

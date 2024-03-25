@@ -42,7 +42,7 @@ public class myFrame extends JFrame implements ActionListener {
            buyButtons.add(new JButton());
         }
     }
-    public JTextField turn = new JTextField("Player1");
+    public JTextField turnDisplay = new JTextField("Player1");
     public static ArrayList<JLayeredPane> lv2CardsBase= new ArrayList<>();
     public static ArrayList<JLayeredPane> lv3CardsBase= new ArrayList<>();
     public static ArrayList<JLayeredPane> lv0CardsBase= new ArrayList<>();
@@ -66,11 +66,11 @@ public class myFrame extends JFrame implements ActionListener {
         confirm.setBounds(880,800,100,100);
         slot.setBounds(1805,0,100,100);
         pane.setBounds(0,0,1920,1080);
-        turn.setBounds(10,500,100,50);
-        turn.setOpaque(false);
-        turn.setBorder(null);
-        turn.setFont(new Font("Calibre" , Font.PLAIN , 30));
-        pane.add(turn,Integer.valueOf(3));
+        turnDisplay.setBounds(10,500,100,50);
+        turnDisplay.setOpaque(false);
+        turnDisplay.setBorder(null);
+        turnDisplay.setFont(new Font("Calibre" , Font.PLAIN , 30));
+        pane.add(turnDisplay,Integer.valueOf(3));
         this.add(pane);
     }
     int cardCount =0;
@@ -277,9 +277,20 @@ public class myFrame extends JFrame implements ActionListener {
             if(buttonsActive == 1){
                 for (int i = 0; i < 5; i++) {
                     if(checkArray[i] == 1){
-                        player1.takeFromSlotMachine(i);
-                        goBack2();
-                        break;
+                        if(turn == 1){
+                            player1.takeFromSlotMachine(i);
+                            goBack2();
+                            turn = 2;
+                            turnDisplay.setText("Player2");
+                            break;
+                        }
+                        else if(turn == 2){
+                            player2.takeFromSlotMachine(i);
+                            goBack2();
+                            turn = 1;
+                            turnDisplay.setText("Player1");
+                            break;
+                        }
                     }
                 }
             }
@@ -305,21 +316,37 @@ public class myFrame extends JFrame implements ActionListener {
                         break;
                     }
                 }
-                player1.takeFromSlotMachine(input1,input2,input3);
+                if(turn == 1){
+                    player1.takeFromSlotMachine(input1,input2,input3);
+                    turn =2;
+                    turnDisplay.setText("Player2");
+                }
+                else if(turn == 2){
+                    player2.takeFromSlotMachine(input1,input2,input3);
+                    turn =1;
+                    turnDisplay.setText("Player1");
+                }
                 goBack2();
             }
-
         }
         else for (int i = 4; i < 16; i++) {
             if(e.getSource().equals(buyButtons.get(i))){
-                if(player1.buyCard(i/4,i%4)==0) {
-                    goBack();
+                if(turn==1) {
+                    if (player1.buyCard(i / 4, i % 4) == 0) {
+                        turn=2;
+                        turnDisplay.setText("Player2");
+                        goBack();
+                    }
+                }
+                else if(turn==2) {
+                    if (player2.buyCard(i / 4, i % 4) == 0) {
+                        turn=1;
+                        turnDisplay.setText("Player1");
+                        goBack();
+                    }
                 }
             }
         }
-
-
-
     }
 
     private void goBack() {

@@ -21,6 +21,9 @@ public class myFrame extends JFrame implements ActionListener {
     JButton back2 = new JButton("Back");
     JButton slot = new JButton("Slots");
     JButton confirm = new JButton("Confirm");
+    JButton back3 = new JButton("Back");
+    JButton Reserved = new JButton("Reserved Cards");
+
 
     JCheckBox RedBox = new JCheckBox();
     JCheckBox GreenBox = new JCheckBox();
@@ -58,16 +61,21 @@ public class myFrame extends JFrame implements ActionListener {
         setResizable(false);
         this.setLocation(0,0);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        shop.setBounds(0,0,100,100);
         pane.add(shop , Integer.valueOf(0));
+        pane.add(Reserved , Integer.valueOf(0));
         pane.add(slot, Integer.valueOf(0));
         shop.addActionListener(this);
+        Reserved.addActionListener(this);
         confirm.addActionListener(this);
         back.addActionListener(this);
         back2.addActionListener(this);
+        back3.addActionListener(this);
         slot.addActionListener(this);
+        shop.setBounds(0,0,100,100);
+        Reserved.setBounds(860,0,200,100);
         back.setBounds(0,0,100,100);
         back2.setBounds(1805,0,100,100);
+        back3.setBounds(1805,0,100,100);
         confirm.setBounds(880,800,100,100);
         slot.setBounds(1805,0,100,100);
         pane.setBounds(0,0,1920,1080);
@@ -91,9 +99,7 @@ public class myFrame extends JFrame implements ActionListener {
         RedLabel.setBounds(10,575,30,30);
         RedLabel1.setBounds(10,675,30,30);
         ImageIcon RedCoin= new ImageIcon("Red.png");
-        Image image = RedCoin.getImage();
-        Image newImg = image.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-        RedCoin = new ImageIcon(newImg);
+        RedCoin= resize(RedCoin , 30,30);
         RedLabel.setIcon(RedCoin);
         RedLabel1.setIcon(RedCoin);
         pane.add(RedLabel,Integer.valueOf(3));
@@ -103,9 +109,7 @@ public class myFrame extends JFrame implements ActionListener {
         GreenLabel.setBounds(43,575,30,30);
         GreenLabel1.setBounds(43,675,30,30);
         ImageIcon GreenCoin= new ImageIcon("green.png");
-        Image image1 = GreenCoin.getImage();
-        Image newImg1 = image1.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-        GreenCoin = new ImageIcon(newImg1);
+        GreenCoin= resize(GreenCoin , 30,30);
         GreenLabel.setIcon(GreenCoin);
         GreenLabel1.setIcon(GreenCoin);
         pane.add(GreenLabel,Integer.valueOf(3));
@@ -115,9 +119,7 @@ public class myFrame extends JFrame implements ActionListener {
         BlueLabel.setBounds(76,575,30,30);
         BlueLabel1.setBounds(76,675,30,30);
         ImageIcon BlueCoin= new ImageIcon("Blue.png");
-        Image image2 = BlueCoin.getImage();
-        Image newImg2 = image2.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-        BlueCoin = new ImageIcon(newImg2);
+        BlueCoin= resize(BlueCoin , 30,30);
         BlueLabel.setIcon(BlueCoin);
         BlueLabel1.setIcon(BlueCoin);
         pane.add(BlueLabel,Integer.valueOf(3));
@@ -127,9 +129,7 @@ public class myFrame extends JFrame implements ActionListener {
         BlackLabel.setBounds(109,575,30,30);
         BlackLabel1.setBounds(109,675,30,30);
         ImageIcon BlackCoin= new ImageIcon("Black.png");
-        Image image3 = BlackCoin.getImage();
-        Image newImg3 = image3.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-        BlackCoin = new ImageIcon(newImg3);
+        BlackCoin= resize(BlackCoin , 30,30);
         BlackLabel.setIcon(BlackCoin);
         BlackLabel1.setIcon(BlackCoin);
         pane.add(BlackLabel,Integer.valueOf(3));
@@ -139,9 +139,7 @@ public class myFrame extends JFrame implements ActionListener {
         WhiteLabel.setBounds(142,575,30,30);
         WhiteLabel1.setBounds(142,675,30,30);
         ImageIcon WhiteCoin= new ImageIcon("White.png");
-        Image image4 = WhiteCoin.getImage();
-        Image newImg4 = image4.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-        WhiteCoin = new ImageIcon(newImg4);
+        WhiteCoin= resize(WhiteCoin , 30,30);
         WhiteLabel.setIcon(WhiteCoin);
         WhiteLabel1.setIcon(WhiteCoin);
         pane.add(WhiteLabel,Integer.valueOf(3));
@@ -149,9 +147,7 @@ public class myFrame extends JFrame implements ActionListener {
         JLabel GoldLabel = new JLabel();
         GoldLabel.setBounds(175,575,30,30);
         ImageIcon GoldCoin= new ImageIcon("Gold.png");
-        Image image5 = GoldCoin.getImage();
-        Image newImg5 = image5.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-        GoldCoin = new ImageIcon(newImg5);
+        GoldCoin= resize(GoldCoin , 30,30);
         GoldLabel.setIcon(GoldCoin);
         pane.add(GoldLabel,Integer.valueOf(3));
         this.add(pane);
@@ -182,6 +178,7 @@ public class myFrame extends JFrame implements ActionListener {
                 lv0CardsBase.set(index ,new JLayeredPane());
             cardPane = lv0CardsBase.get(index);
         }else cardPane=null;
+        assert cardPane != null;
         cardPane.setBounds(XPos, YPos, 200, 300);
         cardPane.setBorder(new LineBorder(new Color(0, 0, 0), 3));
         //adds voucher icon
@@ -193,9 +190,8 @@ public class myFrame extends JFrame implements ActionListener {
                 break;
             }
         }
-        Image image = icon.getImage();
-        Image newImg = image.getScaledInstance(40, 40, java.awt.Image.SCALE_SMOOTH);
-        icon = new ImageIcon(newImg);
+        assert icon != null;
+        icon = resize(icon,40,40);
         JLabel voucher = new JLabel(icon);
         voucher.setBounds(150, 10, 40, 40);
         voucher.setOpaque(false);
@@ -213,9 +209,7 @@ public class myFrame extends JFrame implements ActionListener {
         for (int i = 0; i < card.cost.length; i++) {
           if(card.cost[i] != 0){
               ImageIcon icon1= coinList.get(i);
-              Image image1 = icon1.getImage();
-              Image newImg1 = image1.getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH);
-              icon1 = new ImageIcon(newImg1);
+              icon1 = resize(icon1 , 40,40);
               priceList.add(new JLabel(icon1));
               priceList.getLast().setText(((Integer) card.cost[i]).toString());
               priceList.getLast().setHorizontalTextPosition(SwingConstants.CENTER);
@@ -328,12 +322,29 @@ public class myFrame extends JFrame implements ActionListener {
         pane.add(back2 ,Integer.valueOf(2));
         pane.add(confirm,Integer.valueOf(2));
     }
+    public void drawReserves(){
+        backGround.setBounds(0,0,1920,1080);
+        backGround.setBackground(Color.white);
+        pane.add(backGround , Integer.valueOf(1));
 
+
+
+
+    }
+    public ImageIcon resize(ImageIcon icon , int width , int height){
+        Image image = icon.getImage();
+        Image newImg = image.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH);
+        icon = new ImageIcon(newImg);
+        return icon;
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(shop)) {
             drawShop();
             pane.repaint();
+        }
+        else if(e.getSource().equals(Reserved)){
+            goBack();
         }
         else if(e.getSource().equals(back)){
             goBack();
@@ -344,6 +355,9 @@ public class myFrame extends JFrame implements ActionListener {
         else if(e.getSource().equals(slot)){
             drawSlots();
             pane.repaint();
+        }
+        else if(e.getSource().equals(back3)){
+            goBack();
         }
         else if(e.getSource().equals(confirm)){
             int buttonsActive = 0;

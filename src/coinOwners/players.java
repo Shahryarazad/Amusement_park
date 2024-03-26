@@ -11,13 +11,14 @@ public class players {
 
      public int[] coinAmounts = {0, 0, 0, 0, 0, 0};
      public int[] voucherAmounts = {0, 0, 0, 0, 0};
+     public int score =0;
      public ArrayList<cards> ownedCards= new ArrayList<>();
      public ArrayList<cards> reservedCards= new ArrayList<>();
      public ArrayList<JLayeredPane> reservedCardsBase= new ArrayList<>(List.of(new JLayeredPane() ,new JLayeredPane(),new JLayeredPane()));
      public static players player1 = new players();
      public static players player2 = new players();
      public static int turn=1;
-     public void takeFromSlotMachine(int machineNum){
+     public boolean takeFromSlotMachine(int machineNum){
           boolean allowed =true;
                switch (machineNum){
                     case 0:
@@ -48,8 +49,9 @@ public class players {
                }
                if(allowed)
                     this.coinAmounts[machineNum] +=2;
+               return allowed;
      }
-     public void takeFromSlotMachine(int machineNum1 , int machineNum2, int machineNum3){
+     public boolean takeFromSlotMachine(int machineNum1 , int machineNum2, int machineNum3){
           boolean allowed =true;
           switch (machineNum1+1){
                case 1:
@@ -141,6 +143,7 @@ public class players {
                this.coinAmounts[machineNum2] += 1;
                this.coinAmounts[machineNum3] += 1;
           }
+          return allowed;
      }
      public int buyCard(int level , int index) {
           if (level == 1) {
@@ -151,6 +154,7 @@ public class players {
                }
                if (this.coinAmounts[5] >= extraNeeded) {
                     this.coinAmounts[5] -= extraNeeded;
+                    slotMachines.Bank.coinAmount+=extraNeeded;
                     for (int i = 0; i < cards.lv1CardsOnDeck.get(index).cost.length; i++) {
                          if(cards.lv1CardsOnDeck.get(index).cost[i] > this.voucherAmounts[i])
                               this.coinAmounts[i] -= cards.lv1CardsOnDeck.get(index).cost[i] - this.voucherAmounts[i];
@@ -158,13 +162,14 @@ public class players {
                               this.coinAmounts[i] = 0;
                     }
                     this.ownedCards.add(cards.lv1CardsOnDeck.get(index));
-                    if(this == player1)
+                    this.score+= cards.lv1CardsOnDeck.get(index).funValue;
+                    if(this == player1) {
                          cards.lv1CardsOnDeck.get(index).ownedBy = "1";
-                    else if(this == player2)
+                         player1.voucherAmounts[colorList.indexOf(cards.lv1CardsOnDeck.get(index).voucher)]++;
+                    }
+                    else if(this == player2){
                          cards.lv1CardsOnDeck.get(index).ownedBy = "2";
-                    for (int i = 0; i < 5; i++) {
-                         if(cards.lv1CardsOnDeck.get(index).voucher.equals(colorList.get(i)))
-                              this.voucherAmounts[i]++;
+                         player2.voucherAmounts[colorList.indexOf(cards.lv1CardsOnDeck.get(index).voucher)]++;
                     }
                     cards.lv1CardsOnDeck.remove(index);
                     cards.lv1CardsOnDeck.add(index, new cards(level));
@@ -179,6 +184,7 @@ public class players {
                }
                if (this.coinAmounts[5] >= extraNeeded) {
                     this.coinAmounts[5] -= extraNeeded;
+                    slotMachines.Bank.coinAmount+=extraNeeded;
                     for (int i = 0; i < cards.lv2CardsOnDeck.get(index).cost.length; i++) {
                          if(cards.lv2CardsOnDeck.get(index).cost[i] > this.voucherAmounts[i])
                               this.coinAmounts[i] -= cards.lv2CardsOnDeck.get(index).cost[i] - this.voucherAmounts[i];
@@ -186,13 +192,14 @@ public class players {
                               this.coinAmounts[i] = 0;
                     }
                     this.ownedCards.add(cards.lv2CardsOnDeck.get(index));
-                    if(this == player1)
+                    this.score+= cards.lv2CardsOnDeck.get(index).funValue;
+                    if(this == player1) {
                          cards.lv2CardsOnDeck.get(index).ownedBy = "1";
-                    else if(this == player2)
+                         player1.voucherAmounts[colorList.indexOf(cards.lv2CardsOnDeck.get(index).voucher)]++;
+                    }
+                    else if(this == player2) {
                          cards.lv2CardsOnDeck.get(index).ownedBy = "2";
-                    for (int i = 0; i < 5; i++) {
-                         if(cards.lv2CardsOnDeck.get(index).voucher.equals(colorList.get(i)))
-                              this.voucherAmounts[i]++;
+                         player2.voucherAmounts[colorList.indexOf(cards.lv2CardsOnDeck.get(index).voucher)]++;
                     }
                     cards.lv2CardsOnDeck.remove(index);
                     cards.lv2CardsOnDeck.add(index, new cards(level));
@@ -207,20 +214,21 @@ public class players {
                }
                if (this.coinAmounts[5] >= extraNeeded) {
                     this.coinAmounts[5] -= extraNeeded;
+                    slotMachines.Bank.coinAmount += extraNeeded;
                     for (int i = 0; i < cards.lv3CardsOnDeck.get(index).cost.length; i++) {
-                         if(cards.lv3CardsOnDeck.get(index).cost[i] > this.voucherAmounts[i])
+                         if (cards.lv3CardsOnDeck.get(index).cost[i] > this.voucherAmounts[i])
                               this.coinAmounts[i] -= cards.lv3CardsOnDeck.get(index).cost[i] - this.voucherAmounts[i];
                          if (this.coinAmounts[i] < 0)
                               this.coinAmounts[i] = 0;
                     }
                     this.ownedCards.add(cards.lv3CardsOnDeck.get(index));
-                    if(this == player1)
+                    this.score+= cards.lv3CardsOnDeck.get(index).funValue;
+                    if (this == player1) {
                          cards.lv3CardsOnDeck.get(index).ownedBy = "1";
-                    else if(this == player2)
+                         player1.voucherAmounts[colorList.indexOf(cards.lv3CardsOnDeck.get(index).voucher)]++;
+                    } else if (this == player2){
                          cards.lv3CardsOnDeck.get(index).ownedBy = "2";
-                    for (int i = 0; i < 5; i++) {
-                         if(cards.lv3CardsOnDeck.get(index).voucher.equals(colorList.get(i)))
-                              this.voucherAmounts[i]++;
+                    player2.voucherAmounts[colorList.indexOf(cards.lv3CardsOnDeck.get(index).voucher)]++;
                     }
                     cards.lv3CardsOnDeck.remove(index);
                     cards.lv3CardsOnDeck.add(index, new cards(level));
@@ -235,6 +243,7 @@ public class players {
                }
                if (checker == this.voucherAmounts.length) {
                     this.ownedCards.add(cards.lv0CardsOnDeck.get(index));
+                    this.score+= cards.lv0CardsOnDeck.get(index).funValue;
                     if(this == player1)
                          cards.lv0CardsOnDeck.get(index).ownedBy = "1";
                     else if(this == player2)
@@ -253,20 +262,22 @@ public class players {
           }
           if (this.coinAmounts[5] >= extraNeeded) {
                this.coinAmounts[5] -= extraNeeded;
+               slotMachines.Bank.coinAmount+=extraNeeded;
                for (int i = 0; i < this.reservedCards.get(index).cost.length; i++) {
                     if(this.reservedCards.get(index).cost[i] > this.voucherAmounts[i])
                          this.coinAmounts[i] -= this.reservedCards.get(index).cost[i] - this.voucherAmounts[i];
                     if (this.coinAmounts[i] < 0)
                          this.coinAmounts[i] = 0;
                     }
-                    this.ownedCards.add(this.reservedCards.get(index));
-                    if(this == player1)
+               this.ownedCards.add(this.reservedCards.get(index));
+               this.score+= this.reservedCards.get(index).funValue;
+                    if(this == player1) {
                          this.reservedCards.get(index).ownedBy = "1";
-                    else if(this == player2)
+                         player1.voucherAmounts[colorList.indexOf(reservedCards.get(index).voucher)]++;
+                    }
+                    else if(this == player2) {
                          this.reservedCards.get(index).ownedBy = "2";
-                    for (int i = 0; i < 5; i++) {
-                         if(this.reservedCards.get(index).voucher.equals(colorList.get(i)))
-                              this.voucherAmounts[i]++;
+                         player2.voucherAmounts[colorList.indexOf(reservedCards.get(index).voucher)]++;
                     }
                this.reservedCards.remove(index);
                } else
@@ -284,6 +295,10 @@ public class players {
                     cards.lv1CardsOnDeck.get(index).reservedBy = "2";
                cards.lv1CardsOnDeck.remove(index);
                cards.lv1CardsOnDeck.add(index, new cards(level));
+               if(slotMachines.Bank.coinAmount>=1) {
+                    slotMachines.Bank.coinAmount--;
+                    this.coinAmounts[5]++;
+               }
                return 0;
           }
           else if (level == 2 && this.reservedCards.size()<=2) {
@@ -295,6 +310,10 @@ public class players {
                     cards.lv2CardsOnDeck.get(index).reservedBy = "2";
                cards.lv2CardsOnDeck.remove(index);
                cards.lv2CardsOnDeck.add(index, new cards(level));
+               if(slotMachines.Bank.coinAmount>=1) {
+                    slotMachines.Bank.coinAmount--;
+                    this.coinAmounts[5]++;
+               }
                return 0;
           }
           else if (level == 3 && this.reservedCards.size()<=2) {
@@ -307,6 +326,10 @@ public class players {
                     cards.lv3CardsOnDeck.get(index).reservedBy = "2";
                cards.lv3CardsOnDeck.remove(index);
                cards.lv3CardsOnDeck.add(index, new cards(level));
+               if(slotMachines.Bank.coinAmount>=1) {
+                    slotMachines.Bank.coinAmount--;
+                    this.coinAmounts[5]++;
+               }
                return 0;
           }else return -1;
      }

@@ -11,10 +11,5 @@ public class Main {
         cards.makeFirstCards();
         myFrame myFrame = new myFrame();
         myFrame.pack();
-        players.player1.voucherAmounts[0]= 10;
-        players.player1.voucherAmounts[1]= 10;
-        players.player1.voucherAmounts[2]= 10;
-        players.player1.voucherAmounts[3]= 10;
-        players.player1.voucherAmounts[4]= 10;
     }
 }

@@ -16,14 +16,5 @@ public class Main {
         players.player1.voucherAmounts[2]= 10;
         players.player1.voucherAmounts[3]= 10;
         players.player1.voucherAmounts[4]= 10;
-
-        int response = 0;
-        do{
-            response= scanner.nextInt();
-            if(response == 1){
-                System.out.println(Arrays.toString(players.player1.coinAmounts));
-                System.out.println(Arrays.toString(players.player1.voucherAmounts));
-            }
-        }while (response != 0);
     }
 }

@@ -9,8 +9,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static coinOwners.players.*;
+import coinOwners.players;
 
 import cards.cards;
+import static cards.cards.*;
+
 import com.sun.security.jgss.InquireType;
 
 import static colors.colors.*;
@@ -40,20 +43,19 @@ public class myFrame extends JFrame implements ActionListener {
     public JTextField turnDisplay = new JTextField("Player1");
     public JTextField coinAmountDisplay = new JTextField(Arrays.toString(player1.coinAmounts));
     public JTextField voucherAmountDisplay = new JTextField(Arrays.toString(player1.voucherAmounts));
-
     public static ArrayList<JLayeredPane> lv1CardsBase= new ArrayList<>();
+    public static ArrayList<JLayeredPane> lv2CardsBase= new ArrayList<>();
+    public static ArrayList<JLayeredPane> lv3CardsBase= new ArrayList<>();
+    public static ArrayList<JLayeredPane> lv0CardsBase= new ArrayList<>();
     public static ArrayList<JButton> buyButtons = new ArrayList<>();
     public static ArrayList<JButton> reserveButtons = new ArrayList<>();
 
     {
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 30; i++) {
             buyButtons.add(new JButton());
             reserveButtons.add(new JButton());
         }
     }
-    public static ArrayList<JLayeredPane> lv2CardsBase= new ArrayList<>();
-    public static ArrayList<JLayeredPane> lv3CardsBase= new ArrayList<>();
-    public static ArrayList<JLayeredPane> lv0CardsBase= new ArrayList<>();
     public myFrame(){
         this.setPreferredSize(new Dimension(1920,1080));
         this.setLayout(null);
@@ -244,6 +246,72 @@ public class myFrame extends JFrame implements ActionListener {
             pane.add(cardPane, 2,-1);
 
     }
+    public void drawCard(int XPos , int YPos , cards card,int index, players player) {
+        //makes card base
+        JLayeredPane cardPane = new JLayeredPane();
+        cardPane.setBounds(XPos, YPos, 200, 300);
+        cardPane.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+        //adds voucher icon
+        if(!(card.voucher.isEmpty())){
+            ImageIcon icon = null;
+            for (int i = 0; i < colorList.size(); i++) {
+                if (card.voucher.equals(colorList.get(i))) {
+                    icon = coinList.get(i);
+                    break;
+                }
+            }
+            assert icon != null;
+            icon = resize(icon,40,40);
+            JLabel voucher = new JLabel(icon);
+            voucher.setBounds(150, 10, 40, 40);
+            voucher.setOpaque(false);
+            cardPane.add(voucher, Integer.valueOf(0));
+        }
+        //adds funValue
+        JLabel funValue = new JLabel(((Integer) card.funValue).toString());
+        funValue.setBounds(20,9,40,40);
+        funValue.setOpaque(false);
+        funValue.setFont(new Font("Calibre" , Font.PLAIN , 30));
+        cardPane.add(funValue , Integer.valueOf(0));
+        //add price
+        ArrayList<JLabel> priceList= new ArrayList<>();
+        int coinIndex = 0;
+        for (int i = 0; i < card.cost.length; i++) {
+            if(card.cost[i] != 0){
+                ImageIcon icon1= coinList.get(i);
+                icon1 = resize(icon1 , 40,40);
+                priceList.add(new JLabel(icon1));
+                priceList.getLast().setText(((Integer) card.cost[i]).toString());
+                priceList.getLast().setHorizontalTextPosition(SwingConstants.CENTER);
+                priceList.getLast().setVerticalTextPosition(SwingConstants.BOTTOM);
+                priceList.getLast().setIconTextGap(0);
+                priceList.getLast().setForeground(new Color(138, 138, 0));
+                priceList.getLast().setBounds(150-(40*coinIndex),220,40,85);
+                priceList.getLast().setFont(new Font("Calibre" , Font.BOLD , 20));
+                cardPane.add(priceList.getLast());
+                coinIndex++;
+            }
+
+        }
+        //add buttons
+        if(player == player1){
+            JButton buy=new JButton("Buy");
+            buy.setBounds(20,100,70,70);
+            cardPane.add(buy);
+            buy.addActionListener(this);
+            buyButtons.set(20+index,buy);
+        }
+        if(player == player2){
+            JButton buy=new JButton("Buy");
+            buy.setBounds(20,100,70,70);
+            cardPane.add(buy);
+            buy.addActionListener(this);
+            buyButtons.set(20+index+4,buy);
+        }
+        //final addition
+        pane.add(cardPane, 2,-1);
+        player.reservedCardsBase.set(index,cardPane);
+    }
     public void drawShop(){
         backGround.setBounds(0,0,1920,1080);
         backGround.setBackground(Color.white);
@@ -325,11 +393,18 @@ public class myFrame extends JFrame implements ActionListener {
     public void drawReserves(){
         backGround.setBounds(0,0,1920,1080);
         backGround.setBackground(Color.white);
+        pane.add(back3 , Integer.valueOf(2));
         pane.add(backGround , Integer.valueOf(1));
-
-
-
-
+        if(turn ==1){
+            for (int i = 0; i < player1.reservedCards.size(); i++) {
+                drawCard(600+250*i,25,player1.reservedCards.get(i),i,player1);
+            }
+        }
+        if(turn ==2){
+            for (int i = 0; i < player2.reservedCards.size(); i++) {
+                drawCard(600+250*i,25,player2.reservedCards.get(i),i,player2);
+            }
+        }
     }
     public ImageIcon resize(ImageIcon icon , int width , int height){
         Image image = icon.getImage();
@@ -344,7 +419,11 @@ public class myFrame extends JFrame implements ActionListener {
             pane.repaint();
         }
         else if(e.getSource().equals(Reserved)){
-            goBack();
+            drawReserves();
+        }
+        else if(e.getSource().equals(slot)){
+            drawSlots();
+            pane.repaint();
         }
         else if(e.getSource().equals(back)){
             goBack();
@@ -352,12 +431,8 @@ public class myFrame extends JFrame implements ActionListener {
         else if(e.getSource().equals(back2)){
             goBack2();
         }
-        else if(e.getSource().equals(slot)){
-            drawSlots();
-            pane.repaint();
-        }
         else if(e.getSource().equals(back3)){
-            goBack();
+            goBack3();
         }
         else if(e.getSource().equals(confirm)){
             int buttonsActive = 0;
@@ -388,19 +463,13 @@ public class myFrame extends JFrame implements ActionListener {
                         if(turn == 1){
                             player1.takeFromSlotMachine(i);
                             goBack2();
-                            turn = 2;
-                            turnDisplay.setText("Player2");
-                            coinAmountDisplay.setText(Arrays.toString(player2.coinAmounts));
-                            voucherAmountDisplay.setText(Arrays.toString(player2.voucherAmounts));
+                            switchTurn(2);
                             break;
                         }
                         else if(turn == 2){
                             player2.takeFromSlotMachine(i);
                             goBack2();
-                            turn = 1;
-                            coinAmountDisplay.setText(Arrays.toString(player1.coinAmounts));
-                            voucherAmountDisplay.setText(Arrays.toString(player1.voucherAmounts));
-                            turnDisplay.setText("Player1");
+                            switchTurn(1);
                             break;
                         }
                     }
@@ -430,17 +499,11 @@ public class myFrame extends JFrame implements ActionListener {
                 }
                 if(turn == 1){
                     player1.takeFromSlotMachine(input1,input2,input3);
-                    turn =2;
-                    coinAmountDisplay.setText(Arrays.toString(player2.coinAmounts));
-                    voucherAmountDisplay.setText(Arrays.toString(player2.voucherAmounts));
-                    turnDisplay.setText("Player2");
+                    switchTurn(2);
                 }
                 else if(turn == 2){
                     player2.takeFromSlotMachine(input1,input2,input3);
-                    turn =1;
-                    coinAmountDisplay.setText(Arrays.toString(player1.coinAmounts));
-                    voucherAmountDisplay.setText(Arrays.toString(player1.voucherAmounts));
-                    turnDisplay.setText("Player1");
+                    switchTurn(1);
                 }
                 goBack2();
             }
@@ -449,46 +512,50 @@ public class myFrame extends JFrame implements ActionListener {
             if(e.getSource().equals(buyButtons.get(i))){
                 if(turn==1) {
                     if (player1.buyCard(i / 4, i % 4) == 0) {
-                        turn=2;
-                        coinAmountDisplay.setText(Arrays.toString(player2.coinAmounts));
-                        voucherAmountDisplay.setText(Arrays.toString(player2.voucherAmounts));
-                        turnDisplay.setText("Player2");
+                        switchTurn(2);
                         goBack();
                     }
                 }
                 else if(turn==2) {
                     if (player2.buyCard(i / 4, i % 4) == 0) {
-                        turn=1;
-                        coinAmountDisplay.setText(Arrays.toString(player1.coinAmounts));
-                        voucherAmountDisplay.setText(Arrays.toString(player1.voucherAmounts));
-                        turnDisplay.setText("Player1");
+                        switchTurn(1);
                         goBack();
                     }
                 }
             }
         }
-
-
         for (int i = 0; i < 16; i++) {
             if(e.getSource().equals(reserveButtons.get(i))){
                 if(turn==1) {
                     if (player1.reserveCard(i / 4, i % 4) == 0) {
-                        turn=2;
-                        turnDisplay.setText("Player2");
+                        switchTurn(2);
                         goBack();
                     }
                 }
                 else if(turn==2) {
                     if (player2.reserveCard(i / 4, i % 4) == 0) {
-                        turn=1;
-                        turnDisplay.setText("Player1");
+                        switchTurn(1);
                         goBack();
                     }
                 }
             }
         }
+        for (int i = 20; i < 27; i++) {
+            if(e.getSource().equals(buyButtons.get(i))){
+                if(turn==1) {
+                    player1.buyCard(i-20);
+                    goBack3();
+                    switchTurn(2);
+                    }
+                else if(turn==2) {
+                    player2.buyCard(i-24);
+                    goBack3();
+                    switchTurn(1);
+                }
+                }
+            }
+        }
 
-    }
 
     private void goBack() {
         pane.remove(lv1CardsBase.get(0));
@@ -526,5 +593,35 @@ public class myFrame extends JFrame implements ActionListener {
         pane.remove(WhiteBox);
         pane.remove(confirm);
         pane.repaint();
+    }
+    private void goBack3() {
+        pane.remove(backGround);
+        pane.remove(back3);
+        if(turn == 1){
+            for (int i = 0; i < player1.reservedCardsBase.size(); i++) {
+                pane.remove(player1.reservedCardsBase.get(i));
+            }
+        }
+        if(turn == 2){
+            for (int i = 0; i < player2.reservedCardsBase.size(); i++) {
+                pane.remove(player2.reservedCardsBase.get(i));
+            }
+        }
+        pane.repaint();
+    }
+    public void switchTurn(int newTurn){
+        if(newTurn ==2) {
+            turn = 2;
+            turnDisplay.setText("Player2");
+            coinAmountDisplay.setText(Arrays.toString(player2.coinAmounts));
+            voucherAmountDisplay.setText(Arrays.toString(player2.voucherAmounts));
+        }
+        if(newTurn ==1) {
+            turn = 1;
+            turnDisplay.setText("Player1");
+            coinAmountDisplay.setText(Arrays.toString(player1.coinAmounts));
+            voucherAmountDisplay.setText(Arrays.toString(player1.voucherAmounts));
+        }
+
     }
 }

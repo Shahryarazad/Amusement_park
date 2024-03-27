@@ -75,7 +75,7 @@ public class myFrame extends JFrame implements ActionListener {
     }
     public myFrame(){
         //set up frame
-        this.setUndecorated(true);
+//        this.setUndecorated(true);
         this.setPreferredSize(new Dimension(1920,1080));
         this.setLayout(null);
         this.setVisible(true);
@@ -402,6 +402,9 @@ public class myFrame extends JFrame implements ActionListener {
         drawCard(1500,25,cards.lv0CardsOnDeck.get(0) ,0,0);
         drawCard(1500,375,cards.lv0CardsOnDeck.get(1) ,0,1);
         drawCard(1500,725,cards.lv0CardsOnDeck.get(2) ,0,2);
+        shop.setEnabled(false);
+        slot.setEnabled(false);
+        Reserved.setEnabled(false);
 }
     public void drawSlots(){
         backGround.setBounds(0,0,1920,1080);
@@ -506,6 +509,9 @@ public class myFrame extends JFrame implements ActionListener {
         pane.add(GoldAmount , Integer.valueOf(2));
         GoldAmount.setFont(new Font("calibre" , Font.PLAIN ,50));
         GoldAmount.setText(Integer.toString(slotMachines.Bank.coinAmount));
+        shop.setEnabled(false);
+        slot.setEnabled(false);
+        Reserved.setEnabled(false);
     }
     public void drawReserves(){
         backGround.setBounds(0,0,1920,1080);
@@ -522,6 +528,9 @@ public class myFrame extends JFrame implements ActionListener {
                 drawCard(600+250*i,25,player2.reservedCards.get(i),i,player2);
             }
         }
+        shop.setEnabled(false);
+        slot.setEnabled(false);
+        Reserved.setEnabled(false);
     }
 
     public void drawMenu(){
@@ -720,6 +729,9 @@ public class myFrame extends JFrame implements ActionListener {
         pane.remove(backGround);
         pane.remove(back);
         pane.repaint();
+        shop.setEnabled(true);
+        slot.setEnabled(true);
+        Reserved.setEnabled(true);
     }
 
     private void goBack2() {
@@ -744,8 +756,12 @@ public class myFrame extends JFrame implements ActionListener {
         pane.remove(GoldAmount);
         pane.remove(confirm);
         pane.repaint();
+        shop.setEnabled(true);
+        slot.setEnabled(true);
+        Reserved.setEnabled(true);
     }
     private void goBack3() {
+        System.out.println("3");
         pane.remove(backGround);
         pane.remove(back3);
         if(turn == 1){
@@ -759,13 +775,20 @@ public class myFrame extends JFrame implements ActionListener {
             }
         }
         pane.repaint();
+        shop.setEnabled(true);
+        slot.setEnabled(true);
+        Reserved.setEnabled(true);
     }
     private void goBack4() {
+        System.out.println("4");
         pane.remove(backGround2);
         pane.remove(shop);
         pane.remove(slot);
         pane.remove(Reserved);
         pane.repaint();
+        shop.setEnabled(true);
+        slot.setEnabled(true);
+        Reserved.setEnabled(true);
     }
 
     public void switchTurn(int newTurn){
@@ -781,5 +804,17 @@ public class myFrame extends JFrame implements ActionListener {
         voucherAmountDisplay1.setText(Arrays.toString(player1.voucherAmounts)+"P1");
         coinAmountDisplay2.setText(Arrays.toString(player2.coinAmounts)+"P2:"+player2.score);
         voucherAmountDisplay2.setText(Arrays.toString(player2.voucherAmounts)+"P2");
+        checkForWin();
+    }
+
+    public void checkForWin(){
+        if(player1.score>=15){
+            this.dispose();
+            System.out.println("Player1 WIN");
+        }
+        else if(player2.score>=15){
+            this.dispose();
+            System.out.println("Player2 WIN");
+        }
     }
 }

@@ -288,7 +288,6 @@ public class players {
      public int reserveCard(int level , int index){
           if (level == 1 && this.reservedCards.size()<=2) {
                this.reservedCards.add(cards.lv1CardsOnDeck.get(index));
-               System.out.println(this.reservedCards.size());
                if(this == player1)
                     cards.lv1CardsOnDeck.get(index).reservedBy = "1";
                else if(this == player2)
@@ -303,7 +302,6 @@ public class players {
           }
           else if (level == 2 && this.reservedCards.size()<=2) {
                this.reservedCards.add(cards.lv2CardsOnDeck.get(index));
-               System.out.println(this.reservedCards.size());
                if(this == player1)
                     cards.lv2CardsOnDeck.get(index).reservedBy = "1";
                else if(this == player2)
@@ -317,9 +315,7 @@ public class players {
                return 0;
           }
           else if (level == 3 && this.reservedCards.size()<=2) {
-               System.out.println(this.reservedCards.size());
                this.reservedCards.add(cards.lv3CardsOnDeck.get(index));
-               System.out.println(this.reservedCards.size());
                if(this == player1)
                     cards.lv3CardsOnDeck.get(index).reservedBy = "1";
                else if(this == player2)

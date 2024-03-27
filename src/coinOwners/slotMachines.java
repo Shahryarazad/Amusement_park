@@ -12,12 +12,5 @@ public class slotMachines {
         this.coinAmount = coinAmount;
         }
 
-        public static void takeFromAllBut(int machineNum){
-
-
-
-
-        }
-
     }
 

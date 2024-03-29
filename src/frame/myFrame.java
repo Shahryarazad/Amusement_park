@@ -696,14 +696,16 @@ public class myFrame extends JFrame implements ActionListener {
         for (int i = 20; i < 27; i++) {
             if(e.getSource().equals(buyButtons.get(i))){
                 if(turn==1) {
-                    player1.buyCard(i-20);
+                    if(player1.buyCard(i - 20) == 0){
                     goBack3();
                     switchTurn(2);
+                }
                     }
                 else if(turn==2) {
-                    player2.buyCard(i-24);
-                    goBack3();
-                    switchTurn(1);
+                    if(player2.buyCard(i-24) == 0) {
+                        goBack3();
+                        switchTurn(1);
+                    }
                 }
                 }
             }
